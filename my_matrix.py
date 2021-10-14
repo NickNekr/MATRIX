@@ -18,8 +18,8 @@ class Matrix(object):
             return False
 
     def __str__(self):
-        return '\n'.join('\t'.join(list(map(str, line)))
-                         for line in self.lines)
+        return "\left(\ begin{matrix}" + '\n' + "\\\\\n".join('$ '.join(list(map(str, line)))
+                         for line in self.lines) + '\n' + "\end{matrix}\ right)"
 
     def tr(self):
         ans = 0
