@@ -85,3 +85,34 @@ class Matrix(object):
         else:
             return self * \
                    Matrix((self * self).lines).__pow__((power - 1) // 2)
+        
+        
+        def stepped(self):
+        matrix_slau = self.lines[:]
+        zero = [0 for i in range(len(matrix_slau[0]))]
+        for i in range(len(matrix_slau)):
+            matrix_slau = matrix_slau[:i] + \
+                          sorted(matrix_slau[i:],
+                                 key=lambda x: x[i] == 0)
+            if matrix_slau[i][i] != 0:
+                matrix_slau[i] = list(map(lambda x: round(x, 3),
+                                          map(lambda x: x * float((1 /
+                                                                   matrix_slau[i][i])),
+                                              matrix_slau[i])))
+            for j in range(i + 1, len(matrix_slau)):
+                matrix_slau[j] = list(map(lambda x: round(x, 3), [j + i for j, i in
+                                                                  zip(matrix_slau[j],
+                                                                      map(
+                                                                          lambda x:
+                                                                          x * ((-1) *
+                                                                               matrix_slau[j][i]),
+                                                                          matrix_slau[i]))]))
+        for i in range(len(matrix_slau) - 1, 0, -1):
+            for j in range(0, i):
+                matrix_slau[j] = list(map(lambda x: round(x, 3), [j + i for j, i in
+                                                                  zip(map(lambda x: x * (-1) * matrix_slau[j][i],
+                                                                          matrix_slau[i]), matrix_slau[j])]))
+        if isinstance(self, No_Tex_matrix):
+            return No_Tex_matrix(matrix_slau)
+        else:
+            return Matrix(matrix_slau)
